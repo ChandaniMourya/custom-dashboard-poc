@@ -80,8 +80,12 @@ const MetricSection = ({ section }) => {
                 filter(widget => seletedMetric.some(selected => selected.widgetId === widget.widgetId)).map((widget, index) => {
                   const base = responseData?.[section.definitionId];
                   const value = getValueByPath(base, widget.valueDefinition);
-                  const data = { label: widget.label, value: value };
-                  return <MetricWidget key={index} widget={data} />;
+                   let trendValue = ''
+                  if(widget?.config?.trend?.valueDefinition){
+                     trendValue = getValueByPath(base, widget.config.trend.valueDefinition);
+                  }
+                  const data = { value: value, trendValue: trendValue , config : widget};
+                  return <MetricWidget key={index} data={data}  />;
                 });
             })()
           )}
