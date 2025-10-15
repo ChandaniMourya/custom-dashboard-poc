@@ -4,6 +4,8 @@ import { MasterMetadataProvider } from "./context/master_metadata_context";
 import { getDashboardMetadata } from "./mock-api";
 import SectionTypes from "./constants/sectionTypes";
 import MetricSection from "./sections/metric_section";
+import TableSection from "./sections/table_section"; 
+
 
 const Dashboard = ({ id = "dashboard123" }) => {
   const [dashboardConfig, setDashboardConfig] = useState(null);
@@ -55,6 +57,8 @@ const Dashboard = ({ id = "dashboard123" }) => {
             switch (section.typeId) {
               case SectionTypes.METRIC:
                 return <MetricSection key={section.sectionId} section={section} />;
+              case SectionTypes.TABLE:
+                return <TableSection key={section.sectionId} section={section} />;
               default:
                 return null;
             }
