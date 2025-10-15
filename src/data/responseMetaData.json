@@ -1,0 +1,65 @@
+[
+  {
+    "financial_overview": {
+      "query_result": {
+        "a": 1250000,
+        "a_trend": 9.8,
+        "b": 840000,
+        "b_trend": -9.8,
+        "c": 312,
+        "c_trend": 0,
+        "d": 45000,
+        "e": 75,
+        "f": 120
+      }
+    }
+  },
+  {
+    "key_business_metrics": {
+      "query_result": {
+        "a": 564,
+        "b": 9201,
+        "c": 15700,
+        "d": -1240
+      }
+    }
+  },
+  {
+    "top_instruments": {
+      "query_result": {
+        "data": [
+          {
+            "symbol": "EUR/USD",
+            "price": 1.17,
+            "change": -0.001,
+            "volume": 10000
+          },
+          {
+            "symbol": "XAU/USD",
+            "price": 1800.5,
+            "change": 12.4,
+            "volume": 8500
+          },
+          {
+            "symbol": "GBP/USD",
+            "price": 1.39,
+            "change": 0.002,
+            "volume": 7800
+          },
+          {
+            "symbol": "USD/JPY",
+            "price": 109.5,
+            "change": 0.0028,
+            "volume": 6700
+          },
+          {
+            "symbol": "NASDAQ",
+            "price": 14400,
+            "change": 110,
+            "volume": 12000
+          }
+        ]
+      }
+    }
+  }
+]

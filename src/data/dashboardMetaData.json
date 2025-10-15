@@ -1,0 +1,37 @@
+{
+  "dashboardConfig": {
+    "dashboardId": "dashboard123",
+    "config": {
+      "sections": [
+        {
+          "sectionId": "section1",
+          "definitionId": "financial_overview",
+          "typeId":"metric",
+          "label": "Financial Overview",
+          "config": {
+            "enabled": ["totalDeposits","totalWithdrawals","totalLeads"]
+          }
+        },
+        {
+          "sectionId": "section2",
+          "definitionId": "key_business_metrics",
+          "typeId":"metric",
+          "label": "Key Business Metrics",
+          "config": {
+            "enabled": ["activeAccounts"]
+          }
+        },
+        {
+          "sectionId": "section3",
+          "definitionId": "top_instruments",
+          "typeId":"table",
+          "label": "Top Instruments",
+          "tableRowLimit": 5, 
+           "config": {
+            "enabled": ["symbol","price"]
+          }
+        }
+      ]
+    }
+  }
+}
