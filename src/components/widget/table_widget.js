@@ -26,7 +26,7 @@ const TableWidget = ({ columns, rows }) => (
       <TableHead>
         <TableRow>
           {columns.map((col) => (
-            <TableCell key={col}>{col}</TableCell>
+            <TableCell key={col.key}>{col.label || col}</TableCell>
           ))}
         </TableRow>
       </TableHead>
@@ -34,7 +34,7 @@ const TableWidget = ({ columns, rows }) => (
         {rows.map((row, idx) => (
           <TableRow key={idx}>
             {columns.map((col) => (
-              <TableCell key={col}>{row[col]}</TableCell>
+              <TableCell key={col.key}>{row[col.key || col]}</TableCell>
             ))}
           </TableRow>
         ))}

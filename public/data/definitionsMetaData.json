@@ -146,6 +146,7 @@
         "description": "Fetch top instruments data",
         "query": "SELECT symbol, price, change, volume FROM instruments ORDER BY volume DESC"
       },
+      "valueDefinition": "query_result.data",
       "config": {
         "columns": [
           {
