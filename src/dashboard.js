@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { Container, Typography, Box } from "@mui/material";
-import Section from "./components/metrics_section/section";
 import { MasterMetadataProvider, useMasterMetadata } from "./context/master_metadata_context";
 import { getDashboardMetadata } from "./mock-api";
+import SectionTypes from "./constants/sectionTypes";
+import MetricSection from "./sections/metric_section";
 
 const Dashboard = ({ id = "dashboard123" }) => {
   const masterConfig = useMasterMetadata();
@@ -39,25 +40,31 @@ const Dashboard = ({ id = "dashboard123" }) => {
 
   return (
     <MasterMetadataProvider>
-    <Container maxWidth="lg" sx={{ py: 4 }}>
-      <Box sx={{ mb: 4 }}>
-        <Typography
-          variant="h3"
-          component="h1"
-          sx={{ fontWeight: "bold", color: "#333", mb: 2 }}
-        >
-          Dashboard POC
-        </Typography>
-        <Typography variant="body1" color="text.secondary">
-          Dynamic metrics configuration and display system
-        </Typography>
-      </Box>
+      <Container maxWidth="lg" sx={{ py: 4 }}>
+        <Box sx={{ mb: 4 }}>
+          <Typography
+            variant="h3"
+            component="h1"
+            sx={{ fontWeight: "bold", color: "#333", mb: 2 }}
+          >
+            Dashboard POC
+          </Typography>
+          <Typography variant="body1" color="text.secondary">
+            Dynamic metrics configuration and display system
+          </Typography>
+        </Box>
 
-      {/* Render sections */}
-      {sections.map((section) => (
-        <Section key={section.sectionId} section={section} />
-      ))}
-    </Container>
+        {sections.map((section) => (
+          (() => {
+            switch (section.typeId) {
+              case SectionTypes.METRIC:
+                return <MetricSection key={section.sectionId} section={section} />;
+              default:
+                return null;
+            }
+          })()
+        ))}
+      </Container>
     </MasterMetadataProvider>
   );
 };
