@@ -6,6 +6,7 @@ import MetricWidget from '../components/widget/metric_widget';
 import TableWidget from '../components/widget/table_widget';
 import { useMasterMetadata } from '../context/master_metadata_context';
 import MetricDisplay from '../components/metrics_section/view';
+import MetricPopup from '../components/selection/metric_popup';
 
 
 const MetricSection = ({ section }) => {
@@ -14,6 +15,7 @@ const MetricSection = ({ section }) => {
   const [loading, setLoading] = useState(true);
   const [seletedMetric, setSelectedMetric] = useState([]);
   const [definition, setDefinition] = useState(null);
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
 
   const getDataList = async (id) => {
     try {
@@ -26,21 +28,21 @@ const MetricSection = ({ section }) => {
       setLoading(false);
     }
   }
- 
-useEffect(() => {
-  if (!masterMetadata) return;
 
-  const definition = masterMetadata?.definitions?.find(
-    def => def.definitionId === section.definitionId
-  );
-  setDefinition(definition);
+  useEffect(() => {
+    if (!masterMetadata) return;
 
-  setSelectedMetric(
-    definition?.config.widgets.filter(widget =>
-      section.config.enabled?.includes(widget.widgetId)
-    )
-  );
-}, [masterMetadata]);
+    const definition = masterMetadata?.definitions?.find(
+      def => def.definitionId === section.definitionId
+    );
+    setDefinition(definition);
+
+    setSelectedMetric(
+      definition?.config.widgets.filter(widget =>
+        section.config.enabled?.includes(widget.widgetId)
+      )
+    );
+  }, [masterMetadata]);
 
 
   useEffect(() => {
@@ -57,26 +59,35 @@ useEffect(() => {
         <CardContent sx={{ p: 2 }}>
           <Box>
             <Typography variant="h5" component="h2" sx={{ fontWeight: 'bold', color: '#333', mb: 2 }}>
-            {section.label}
-          </Typography>
-          <Button variant="outlined" size="small">
+              {section.label}
+            </Typography>
+            <Button variant="outlined" size="small" onClick={() => setIsPopupOpen(true)}>
               Configure
             </Button>
           </Box>
-          
 
           {loading ? (
             <Typography>Loading...</Typography>
           ) : (
             (() => {
-                return definition.config.widgets.
-                  filter(widget => seletedMetric.some(selected => selected.widgetId === widget.widgetId)).map((widget, index) => {
-                    const base = responseData?.[section.definitionId];
-                    const value = getValueByPath(base, widget.valueDefinition);
-                    const data = {label: widget.label,value: value};
-                    return <MetricWidget key={index} widget={data} />;
-                  });
+              return definition.config.widgets.
+                filter(widget => seletedMetric.some(selected => selected.widgetId === widget.widgetId)).map((widget, index) => {
+                  const base = responseData?.[section.definitionId];
+                  const value = getValueByPath(base, widget.valueDefinition);
+                  const data = { label: widget.label, value: value };
+                  return <MetricWidget key={index} widget={data} />;
+                });
             })()
+          )}
+          {isPopupOpen && (
+            <Box sx={{ mt: 2 }}>
+              <MetricPopup
+                open={isPopupOpen}
+                onClose={() => setIsPopupOpen(false)}
+                selectedMetric={seletedMetric}
+                listOfMetrics={definition?.config?.widgets || []}
+              />
+            </Box>
           )}
         </CardContent>
       </Card>
