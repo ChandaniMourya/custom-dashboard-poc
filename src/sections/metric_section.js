@@ -1,11 +1,8 @@
 import { useState, useEffect } from 'react';
 import { Typography, Card, CardContent, Box, Button } from "@mui/material";
-import { SectionTypes } from '../constants/sectionTypes';
 import { getData } from '../mock-api';
 import MetricWidget from '../components/widget/metric_widget';
-import TableWidget from '../components/widget/table_widget';
 import { useMasterMetadata } from '../context/master_metadata_context';
-import MetricDisplay from '../components/metrics_section/view';
 import MetricPopup from '../components/selection/metric_popup';
 
 
@@ -23,7 +20,7 @@ const MetricSection = ({ section }) => {
     setSelectedMetric(updated);
   };
 
-  const getDataList = async (id) => {
+  const getDataResponse = async (id) => {
     try {
       setLoading(true);
       let data = await getData(id);
@@ -52,12 +49,8 @@ const MetricSection = ({ section }) => {
 
 
   useEffect(() => {
-    getDataList(section.definitionId);
+    getDataResponse(section.definitionId);
   }, [section.definitionId]);
-
-       
-  
-
 
   return (
     <>
@@ -68,7 +61,7 @@ const MetricSection = ({ section }) => {
               {section.label}
             </Typography>
             <Button variant="outlined" size="small" onClick={() => setIsPopupOpen(true)}>
-              Configure
+              Menu
             </Button>
           </Box>
 

@@ -11,7 +11,6 @@ export function MasterMetadataProvider({ children }) {
       try {
         const res = await fetch("/data/definitionsMetaData.json");
         const data = await res.json();
-        console.log(data);
         setMasterMetadata(data);
       } catch (err) {
         console.error("Failed to fetch master metadata", err);

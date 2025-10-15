@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { Container, Typography, Box } from "@mui/material";
-import { MasterMetadataProvider, useMasterMetadata } from "./context/master_metadata_context";
+import { MasterMetadataProvider } from "./context/master_metadata_context";
 import { getDashboardMetadata } from "./mock-api";
 import SectionTypes from "./constants/sectionTypes";
 import MetricSection from "./sections/metric_section";
 
 const Dashboard = ({ id = "dashboard123" }) => {
-  const masterConfig = useMasterMetadata();
   const [dashboardConfig, setDashboardConfig] = useState(null);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -28,7 +27,7 @@ const Dashboard = ({ id = "dashboard123" }) => {
     fetchDashboard();
 
     return () => {
-      isMounted = false; // cleanup to avoid state updates on unmounted component
+      isMounted = false; 
     };
   }, [id]);
 
@@ -48,9 +47,6 @@ const Dashboard = ({ id = "dashboard123" }) => {
             sx={{ fontWeight: "bold", color: "#333", mb: 2 }}
           >
             Dashboard POC
-          </Typography>
-          <Typography variant="body1" color="text.secondary">
-            Dynamic metrics configuration and display system
           </Typography>
         </Box>
 

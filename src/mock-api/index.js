@@ -1,18 +1,8 @@
-
- 
-// Simulate delay
-
 function delay(ms = 500) {
 
   return new Promise((resolve) => setTimeout(resolve, ms));
 
 }
- 
-/**
-
-* GET /api/dashboard/:userId
-
-*/
 
 export async function getDashboardMetadata(dashboardId) {
   await delay();
@@ -25,17 +15,12 @@ export async function getDashboardMetadata(dashboardId) {
   return data.dashboardConfig.config;
 }
 
- 
-
-
 export async function getData(definitionId) {
 
   await delay();
-
   const queries = await fetch("/data/responseMetaData.json");
   const data = await queries.json();
   const query = data.find(item => item[definitionId]);
-    console.log('THIS IS MY QUERY ' , query);
   return query;
 
 }
