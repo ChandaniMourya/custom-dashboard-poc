@@ -64,7 +64,7 @@ const TableSection = ({ section }) => {
   return (
     <Card sx={{ mb: 2, borderRadius: 2, boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)', border: '1px solid #e0e0e0' }}>
       <CardContent sx={{ p: 2 }}>
-        <Box>
+        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
           <Typography variant="h5" component="h2" sx={{ fontWeight: 'bold', color: '#333', mb: 2 }}>
             {section.label}
           </Typography>
