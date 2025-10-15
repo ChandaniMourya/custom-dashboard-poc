@@ -17,6 +17,12 @@ const MetricSection = ({ section }) => {
   const [definition, setDefinition] = useState(null);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
 
+  const handleToggleChange = (selectedIds) => {
+    const allWidgets = definition?.config?.widgets || [];
+    const updated = allWidgets.filter(w => selectedIds.includes(w.widgetId));
+    setSelectedMetric(updated);
+  };
+
   const getDataList = async (id) => {
     try {
       setLoading(true);
@@ -86,6 +92,7 @@ const MetricSection = ({ section }) => {
                 onClose={() => setIsPopupOpen(false)}
                 selectedMetric={seletedMetric}
                 listOfMetrics={definition?.config?.widgets || []}
+                onToggleChange={handleToggleChange}
               />
             </Box>
           )}

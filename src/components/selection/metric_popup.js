@@ -20,11 +20,12 @@ const MetricPopup = ({
   selectedMetric = [],
   onToggleChange,
 }) => {
-  const [selected, setSelected] = useState(selectedMetric);
+  const toIdArray = (arr) => (arr || []).map((m) => (typeof m === "string" ? m : m?.widgetId)).filter(Boolean);
+  const [selected, setSelected] = useState(toIdArray(selectedMetric));
 
   // Keep internal state synced with external props
   useEffect(() => {
-    setSelected(selectedMetric);
+    setSelected(toIdArray(selectedMetric));
   }, [selectedMetric]);
 
   const handleToggle = (id) => {
@@ -32,7 +33,7 @@ const MetricPopup = ({
       ? selected.filter((x) => x !== id)
       : [...selected, id];
     setSelected(updated);
-    if (onToggleChange) onToggleChange(updated);
+    // if (onToggleChange) onToggleChange(updated);
   };
 
   const handleSave = () => {
@@ -52,9 +53,9 @@ const MetricPopup = ({
       <DialogContent dividers>
         {listOfMetrics.length > 0 ? (
           <List dense>
-            {listOfMetrics.map((item) => (
+             {listOfMetrics.map((item) => (
               <ListItem
-                key={item.id}
+                 key={item.widgetId}
                 secondaryAction={
                   <Switch
                     edge="end"
