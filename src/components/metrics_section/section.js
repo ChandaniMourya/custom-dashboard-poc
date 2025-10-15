@@ -1,179 +1,81 @@
-import React, { useState } from 'react';
-import { Box, Typography, Button } from '@mui/material';
-import { Settings as SettingsIcon } from '@mui/icons-material';
+import { useState, useEffect } from 'react';
+import { Typography, Card, CardContent } from "@mui/material";
 import { SectionTypes } from '../../constants/sectionTypes';
-import TableDisplay from './tableDisplay';
-import MetricDisplay from './metricDisplay';
-import TableConfig from './tableConfig';
-import MetricConfig from './metricConfig';
+import { getData } from '../../mock-api';
+import MetricWidget from '../widget/metric_widget';
+import TableWidget from '../widget/table_widget';
+import { useMasterMetadata } from '../../context/master_metadata_context';
 
-const Section = ({ 
-  section,
-  definitionData,
-  responseData,
-  onSave
-}) => {
-  const [configOpen, setConfigOpen] = useState(false);
 
-  // 1. LABEL - Section title
-  const renderLabel = () => {
-    return (
-      <Typography variant="h5" component="h2" sx={{ fontWeight: 'bold', color: '#333', mb: 2 }}>
-        {section.label}
-      </Typography>
-    );
-  };
+const Section = ({ section }) => {
+  console.log(section);
+  const { masterMetadata, error } = useMasterMetadata();
+  console.log(masterMetadata, "kkkkejeodi");
 
-  // 2. BUTTON - Config button based on typeId
-  const renderConfigButton = () => {
-    return (
-      <Button
-        variant="outlined"
-        startIcon={<SettingsIcon />}
-        onClick={() => setConfigOpen(true)}
-        size="small"
-        sx={{
-          borderColor: '#1976d2',
-          color: '#1976d2',
-          '&:hover': {
-            borderColor: '#1976d2',
-            backgroundColor: 'rgba(25, 118, 210, 0.04)',
-          },
-        }}
-      >
-        Configure
-      </Button>
-    );
-  };
+  const [responseData, setResponseData] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-  // 2.5. STATUS LABEL - Shows count of enabled items
-  const renderStatusLabel = () => {
-    if (section.typeId === SectionTypes.METRIC) {
-      const enabledCount = section.widgets?.filter(w => w.enabled).length || 0;
-      const totalCount = section.widgets?.length || 0;
-      return (
-        <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
-          Showing {enabledCount} of {totalCount} available metrics
-        </Typography>
-      );
-    } else if (section.typeId === SectionTypes.TABLE) {
-      const enabledCount = section.tableColumns?.length || 0;
-      const totalCount = definitionData?.config?.columns?.length || 0;
-      return (
-        <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
-          Showing {enabledCount} of {totalCount} available columns
-        </Typography>
-      );
+  const getDataList = async (id) => {
+    try {
+      setLoading(true);
+      let data = await getData(id);
+      console.log(data, "this isssssssssssss");
+      setResponseData(data);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    } finally {
+      setLoading(false);
     }
-    return null;
-  };
+  }
 
-  // 3. DISPLAY - Display component based on typeId
-  const renderDisplay = () => {
-    if (section.typeId === SectionTypes.TABLE) {
-      return (
-        <TableDisplay
-          data={section.tableData}
-          columns={section.tableColumns}
-          rowLimit={section.tableRowLimit}
-        />
-      );
-    } else {
-      return (
-        <MetricDisplay
-          metrics={section.widgets}
-        />
-      );
-    }
-  };
+  useEffect(() => {
+    getDataList(section.definitionId);
+  }, [section.definitionId]);
 
-  // Config handlers
-  const handleSaveConfig = (newData) => {
-    onSave(section.sectionId, newData);
-    setConfigOpen(false);
-  };
-
-  const handleCloseConfig = () => {
-    setConfigOpen(false);
-  };
-
-  const getConfigTitle = () => {
-    return `${section.label} Configuration`;
-  };
-
-  const getConfigSubtitle = () => {
-    if (section.typeId === SectionTypes.METRIC) {
-      const enabledCount = section.widgets?.filter(w => w.enabled).length || 0;
-      const totalCount = section.widgets?.length || 0;
-      return `Showing ${enabledCount} of ${totalCount} available metrics`;
-    } else if (section.typeId === SectionTypes.TABLE) {
-      const enabledCount = section.tableColumns?.length || 0;
-      const totalCount = definitionData?.config?.columns?.length || 0;
-      return `Showing ${enabledCount} of ${totalCount} available columns`;
-    }
-    return "Configure section settings";
-  };
-
-  // Render appropriate config component based on typeId
-  const renderConfig = () => {
-    if (section.typeId === SectionTypes.TABLE) {
-      return (
-        <TableConfig
-          open={configOpen}
-          onClose={handleCloseConfig}
-          onSave={handleSaveConfig}
-          title={getConfigTitle()}
-          subtitle={getConfigSubtitle()}
-          currentSection={section}
-          definitionData={definitionData}
-          responseData={responseData}
-        />
-      );
-    } else {
-      return (
-        <MetricConfig
-          open={configOpen}
-          onClose={handleCloseConfig}
-          onSave={handleSaveConfig}
-          title={getConfigTitle()}
-          subtitle={getConfigSubtitle()}
-          currentSection={section}
-          definitionData={definitionData}
-          responseData={responseData}
-        />
-      );
-    }
-  };
-
+  const definition = masterMetadata?.definitions?.find(
+  def => def.definitionId === section.definitionId
+);
   return (
-    <Box sx={{ 
-      mb: 4,
-      borderRadius: 2,
-      boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)',
-      border: '1px solid #e0e0e0',
-      p: 3
-    }}>
-      {/* 1. LABEL & BUTTON - Same line */}
-      <Box sx={{ 
-        display: 'flex', 
-        justifyContent: 'space-between', 
-        alignItems: 'center',
-        mb: 2 
-      }}>
-        {renderLabel()}
-        {renderConfigButton()}
-      </Box>
-      
-      {/* 2. DISPLAY */}
-      {renderDisplay()}
-      
-      {/* 3. STATUS LABEL */}
-      {renderStatusLabel()}
-      
-      {/* CONFIG POPUP */}
-      {renderConfig()}
-    </Box>
+    <>
+      <Card sx={{ mb: 2, borderRadius: 2, boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)', border: '1px solid #e0e0e0' }}>
+        <CardContent sx={{ p: 2 }}>
+          <Typography variant="h5" component="h2" sx={{ fontWeight: 'bold', color: '#333', mb: 2 }}>
+            {section.label}
+          </Typography>
+
+          {loading ? (
+            <Typography>Loading...</Typography>
+          ) : (
+            (() => {
+              switch (section.typeId) {
+                case SectionTypes.METRIC:
+                  (
+                definition.config.widgets.map((widget, index) => {
+                      const value = getValueByPath(responseData, widget.valueDefinition);
+const data = { ...widget.label, value };
+console.log(data , value , "test");
+
+                  
+                        return <MetricWidget key={index} widget={data} />;
+                      })
+
+                  );
+                case SectionTypes.TABLE:
+                  return (
+                    <>TABLE - Data: {JSON.stringify(responseData)}</>
+                  );
+                default:
+                  return null;
+              }
+            })()
+          )}
+        </CardContent>
+      </Card>
+    </>
   );
 };
-
 export default Section;
+
+export function getValueByPath(obj, path) {
+  return path.split('.').reduce((acc, key) => acc?.[key], obj);
+}
