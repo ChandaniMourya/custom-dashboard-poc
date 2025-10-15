@@ -49,17 +49,12 @@ const Section = ({ section }) => {
             (() => {
               switch (section.typeId) {
                 case SectionTypes.METRIC:
-                  (
-                definition.config.widgets.map((widget, index) => {
-                      const value = getValueByPath(responseData, widget.valueDefinition);
-const data = { ...widget.label, value };
-console.log(data , value , "test");
-
-                  
-                        return <MetricWidget key={index} widget={data} />;
-                      })
-
-                  );
+                  return definition.config.widgets.map((widget, index) => {
+                    const base = responseData?.[section.definitionId];
+                    const value = getValueByPath(base, widget.valueDefinition);
+                    const data = {label: widget.label,value: value};
+                    return <MetricWidget key={index} widget={data} />;
+                  });
                 case SectionTypes.TABLE:
                   return (
                     <>TABLE - Data: {JSON.stringify(responseData)}</>
