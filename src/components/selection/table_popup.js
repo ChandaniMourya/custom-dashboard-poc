@@ -51,13 +51,13 @@ const TablePopup = ({
       <DialogTitle>Select Metrics</DialogTitle>
       
       <DialogContent dividers>
-        <label for="rowLimit">Number of Rows to display</label>
-       <input type="number" min="1" placeholder="Number of Rows" value={rowLimitVal} onChange={(e) => setRowLimitVal(e.target.value)}></input>
+        <label htmlFor="rowLimit">Number of Rows to display</label>
+       <input id="rowLimit" type="number" min="1" placeholder="Number of Rows" value={rowLimitVal} onChange={(e) => setRowLimitVal(e.target.value)}></input>
         {listOfMetrics.length > 0 ? (
           <List dense>
              {listOfMetrics.map((item) => (
               <ListItem
-                 key={item.widgetId}
+                key={item.key}
                 secondaryAction={
                   <Switch
                     edge="end"
