@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Container, Typography, Box } from "@mui/material";
 import { getDashboardMetadata, getDefinitionById } from "./mock-api";
 import SectionRenderer from "./registry/sectionRenderer";
-import { IConfig, ISection } from "./types/ISection";
+import { Config, ISection } from "./types/ISection";
 
 const Dashboard: React.FC<{ id?: string }> = ({ id = "dashboard123" }) => {
   const [dashboardSections, setDashboardSections] = useState<ISection[]>([]);
@@ -17,7 +17,7 @@ const Dashboard: React.FC<{ id?: string }> = ({ id = "dashboard123" }) => {
         const config = await getDashboardMetadata(id);
         const sections = config?.sections || [];
         const sectionsWithDefinitions = await Promise.all(
-          sections.map(async (section: IConfig) => {
+          sections.map(async (section: Config) => {
             try {
               const definition = await getDefinitionById(section.definitionId);
               console.log('Fetched definition:', definition);
@@ -27,7 +27,7 @@ const Dashboard: React.FC<{ id?: string }> = ({ id = "dashboard123" }) => {
               } as ISection;
             } catch (err) {
               console.error(`Failed to fetch definition for ${section.definitionId}:`, err);
-              return section as IConfig;
+              return section as Config;
             }
           })
         );

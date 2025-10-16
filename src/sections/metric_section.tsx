@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import MetricWidget from "../components/widget/metric_widget";
 import MetricPopup from "../components/selection/metric_popup";
 import { getData } from "../mock-api";
-import { IDefinition, ISection, IWidget } from "../types/ISection";
+import { IDefinition, ISection, Widget } from "../types/ISection";
 // Import WidgetConfig type
 interface MetricSectionProps {
   section: ISection;
@@ -12,7 +12,7 @@ interface MetricSectionProps {
 const MetricSection: React.FC<MetricSectionProps> = ({ section }) => {
   const [responseData, setResponseData] = useState<Record<string, any> | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
-  const [selectedMetric, setSelectedMetric] = useState<IWidget[] | any>([]);
+  const [selectedMetric, setSelectedMetric] = useState<Widget[] | any>([]);
   const [definition, setDefinition] = useState<IDefinition | null>(null);
   const [isPopupOpen, setIsPopupOpen] = useState<boolean>(false);
 

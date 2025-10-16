@@ -1,13 +1,13 @@
 import { types } from "util";
 
-export type IWidgetTrend = {
+export type WidgetTrend = {
   trendvalueDefinition: string;
   positiveColor?: string;
   negativeColor?: string;
   neutralColor?: string;
 }
 
-export type IWidgetConfig ={
+export type WidgetConfig ={
   valueDefinition: string;
   unit?: string;
   decimalPlaces?: number;
@@ -17,13 +17,13 @@ export type IWidgetConfig ={
   upperBound?: number;
   colorAbove?: string;
   colorBelow?: string;
-  trend?: IWidgetTrend;
+  trend?: WidgetTrend;
 }
 
-export type IWidget = {
+export type Widget = {
   widgetId: string;
   label: string;
-  config: IWidgetConfig;
+  config: WidgetConfig;
 }
 export type TableColumn ={
   key: string;
@@ -35,7 +35,7 @@ export type IDefinition = {
   typeId: string;  
   queryId: string[];   
   config: {
-    widgets?: IWidget[];
+    widgets?: Widget[];
     valueDefinition?: string;
     columns?: TableColumn[];
   };
@@ -43,13 +43,13 @@ export type IDefinition = {
 
 export interface ISection {
   definition: IDefinition;
-  config : IConfig;
+  config : Config;
   params?: Record<string, any>;
   label?: string;
 }
 
 // Use type here instead of interface.
-export type IConfig = {
+export type Config = {
     sectionId: string;
     definitionId: string;
     label: string;
