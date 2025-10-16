@@ -2,25 +2,25 @@
   {
     "financial_overview": {
       "query_result": {
-        "a": 1250000,
-        "a_trend": 9.8,
-        "b": 840000,
-        "b_trend": -9.8,
-        "c": 312,
-        "c_trend": 0,
-        "d": 45000,
-        "e": 75,
-        "f": 120
+        "total_deposits": 1250000,
+        "total_deposits_trend": 9.8,
+        "total_withdrawals": 840000,
+        "total_withdrawals_trend": -9.8,
+        "total_leads": 312,
+        "total_leads_trend": 0,
+        "swap_paid": 45000,
+        "positions": 75,
+        "new_clients": 120
       }
     }
   },
   {
     "key_business_metrics": {
       "query_result": {
-        "a": 564,
-        "b": 9201,
-        "c": 15700,
-        "d": -1240
+        "total_active_accounts": 564,
+        "total_trades": 9201,
+        "commission_settled": 15700,
+        "realised_profit_loss": -1240
       }
     }
   },

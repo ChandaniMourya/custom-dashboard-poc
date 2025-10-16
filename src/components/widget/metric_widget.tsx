@@ -55,7 +55,7 @@ const MetricWidget: React.FC<MetricWidgetProps> = ({ data }) => {
           <Typography variant="h5" fontWeight={600} color="text.primary">
             {data.value}
           </Typography>
-          {/* {data.trendValue !== undefined && data.trendValue !== "" && data.trendValue !== 0 && (
+          { data.trendValue && data.trendValue !== 0 && (
             <Box
               sx={{
                 mt: 1,
@@ -86,7 +86,7 @@ const MetricWidget: React.FC<MetricWidgetProps> = ({ data }) => {
                 {data.trendValue !== 0 ? `${data.trendValue}` : ""}
               </Typography>
             </Box>
-          )} */}
+          )}
         </Box>
       </CardContent>
     </Card>

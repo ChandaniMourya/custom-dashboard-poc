@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { Container, Typography, Box } from "@mui/material";
-import { MasterMetadataProvider } from "./context/master_metadata_context";
-import { getDashboardMetadata } from "./mock-api";
+import { getDashboardMetadata, getDefinitionById } from "./mock-api";
 import SectionRenderer from "./registry/sectionRenderer";
-import { ISection } from "./types/ISection";
+import { IConfig, ISection } from "./types/ISection";
 
 const Dashboard: React.FC<{ id?: string }> = ({ id = "dashboard123" }) => {
   const [dashboardSections, setDashboardSections] = useState<ISection[]>([]);
@@ -13,10 +12,36 @@ const Dashboard: React.FC<{ id?: string }> = ({ id = "dashboard123" }) => {
   useEffect(() => {
     let isMounted = true;
 
-    const fetchDashboard = async () => {
+    const fetchDashboardWithDefinitions = async () => {
       try {
         const config = await getDashboardMetadata(id);
-        if (isMounted) setDashboardSections(config?.sections || []);
+        const sections = config?.sections || [];
+        const sectionsWithDefinitions = await Promise.all(
+          sections.map(async (section: IConfig) => {
+            try {
+              const definition = await getDefinitionById(section.definitionId);
+              console.log('Fetched definition:', definition);
+              return {
+                ...section,
+                config: {
+                  sectionId: section.sectionId,
+                  definitionId: section.definitionId,
+                  label: section.label,
+                  enabled: section.enabled,
+                  tableRowLimit: section.tableRowLimit
+                },
+                definition: definition
+              } as ISection;
+            } catch (err) {
+              console.error(`Failed to fetch definition for ${section.definitionId}:`, err);
+              return section as IConfig;
+            }
+          })
+        );
+        
+        console.log('Sections with definitions:', sectionsWithDefinitions);
+        
+        if (isMounted) setDashboardSections(sectionsWithDefinitions);
       } catch (err: any) {
         if (isMounted) setError(err.message);
       } finally {
@@ -24,7 +49,7 @@ const Dashboard: React.FC<{ id?: string }> = ({ id = "dashboard123" }) => {
       }
     };
 
-    fetchDashboard();
+    fetchDashboardWithDefinitions();
 
     return () => { isMounted = false; };
   }, [id]);
@@ -34,7 +59,6 @@ const Dashboard: React.FC<{ id?: string }> = ({ id = "dashboard123" }) => {
   if (!dashboardSections.length) return <div>No sections found.</div>;
 
   return (
-    <MasterMetadataProvider>
       <Container maxWidth="lg" sx={{ py: 4 }}>
         <Box sx={{ mb: 4 }}>
           <Typography variant="h3" component="h1" sx={{ fontWeight: "bold", color: "#333", mb: 2 }}>
@@ -46,7 +70,6 @@ const Dashboard: React.FC<{ id?: string }> = ({ id = "dashboard123" }) => {
           <SectionRenderer key={section.config.sectionId} section={section} />
         ))}
       </Container>
-    </MasterMetadataProvider>
   );
 };
 

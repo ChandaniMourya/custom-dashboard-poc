@@ -23,24 +23,34 @@ export interface IWidget {
   label: string;
   config: IWidgetConfig;
 }
+export interface TableColumn {
+  key: string;
+  label: string;
+}
+
 
 export interface IDefinition {
   definitionId: string;
   typeId: string;  
   queryId: string[];   
   config: {
-    widgets: IWidget[];
+    widgets?: IWidget[];
+     valueDefinition?: string;
+    columns?: TableColumn[];
   };
 }
 
 export interface ISection {
   definition: IDefinition;
-  config: {
+  config : IConfig;
+  params?: Record<string, any>;
+  label?: string;
+}
+
+export interface IConfig {
     sectionId: string;
     definitionId: string;
     label: string;
     enabled?: string[];      
     tableRowLimit?: number;  
-  };
-  params: Record<string, any>; 
 }
