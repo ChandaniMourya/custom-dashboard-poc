@@ -30,19 +30,24 @@ export type TableColumn ={
   label: string;
 }
 
-export type IDefinition = {
+export type Definition<T> = {
   definitionId: string;
   typeId: string;  
   queryId: string[];   
-  config: {
-    widgets?: Widget[];
-    valueDefinition?: string;
-    columns?: TableColumn[];
-  };
+  config: T;
 }
 
-export interface ISection {
-  definition: IDefinition;
+export type MetricDefinition = {
+  widgets: Widget[];
+}
+
+export type TableDefinition = {
+  columns: TableColumn[];
+  valueDefinition?: string;
+}
+
+export interface ISection<T = MetricDefinition | TableDefinition> {
+  definition: Definition<T>;
   config : Config;
   params?: Record<string, any>;
   label?: string;

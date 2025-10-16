@@ -3,10 +3,10 @@ import { getData } from '../mock-api';
 import { Box, Button, Card, CardContent, Typography } from '@mui/material';
 import TableWidget from '../components/widget/table_widget';
 import TablePopup from '../components/selection/table_popup';
-import { IDefinition, ISection, TableColumn } from '../types/ISection';
+import { Definition, ISection, TableDefinition, TableColumn } from '../types/ISection';
 
 interface TableSectionProps {
-  section: ISection;
+  section: ISection<TableDefinition>;
 }
 
 const TableSection: React.FC<TableSectionProps> = ({ section }) => {
@@ -15,12 +15,12 @@ const TableSection: React.FC<TableSectionProps> = ({ section }) => {
 
   const [selectedColumns, setSelectedColumns] = useState<TableColumn[]>([]);
   const [numberOfRows, setNumberOfRows] = useState<number | null>(section.config.tableRowLimit || null);
-  const [definition, setDefinition] = useState<IDefinition | null>(null);
+  const [definition, setDefinition] = useState<Definition<TableDefinition> | null>(null);
   const [isPopupOpen, setIsPopupOpen] = useState<boolean>(false);
 
   const handleToggleChange = (selectedKeys: string[], rowLimit: number) => {
     const allColumns = definition?.config.columns || [];
-    const updated = allColumns.filter(col => selectedKeys.includes(col.key));
+    const updated = allColumns.filter((col: TableColumn) => selectedKeys.includes(col.key));
     setSelectedColumns(updated);
     setNumberOfRows(rowLimit);
   };
@@ -37,18 +37,18 @@ const TableSection: React.FC<TableSectionProps> = ({ section }) => {
     }
   };
 
-  function getValueByPath(obj: any, path: string): any {
+  function getValueByPath(obj: Record<string, any>, path: string): any {
     return path.split('.').reduce((acc: any, key: string) => acc?.[key], obj);
   }
 
   useEffect(() => {
-    setDefinition(section.definition as IDefinition);
+    setDefinition(section.definition as Definition<TableDefinition>);
     getDataList(section.definition.definitionId);
 
     setNumberOfRows(section.config.tableRowLimit || 0);
 
     const enabledKeys = section.config.enabled || [];
-    const filteredColumns = section.definition?.config.columns?.filter(col =>
+    const filteredColumns = section.definition?.config?.columns?.filter((col: TableColumn) =>
       enabledKeys.includes(col.key)
     ) || [];
     setSelectedColumns(filteredColumns);

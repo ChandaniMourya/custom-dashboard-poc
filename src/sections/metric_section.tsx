@@ -3,23 +3,23 @@ import { useEffect, useState } from "react";
 import MetricWidget from "../components/widget/metric_widget";
 import MetricPopup from "../components/selection/metric_popup";
 import { getData } from "../mock-api";
-import { IDefinition, ISection, Widget } from "../types/ISection";
+import { Definition, ISection, Widget, MetricDefinition } from "../types/ISection";
 // Import WidgetConfig type
 interface MetricSectionProps {
-  section: ISection;
+  section: ISection<MetricDefinition>;
 }
 
 const MetricSection: React.FC<MetricSectionProps> = ({ section }) => {
   const [responseData, setResponseData] = useState<Record<string, any> | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
-  const [selectedMetric, setSelectedMetric] = useState<Widget[] | any>([]);
-  const [definition, setDefinition] = useState<IDefinition | null>(null);
+  const [selectedMetric, setSelectedMetric] = useState<Widget[]>([]);
+  const [definition, setDefinition] = useState<Definition<MetricDefinition> | null>(null);
   const [isPopupOpen, setIsPopupOpen] = useState<boolean>(false);
 
   const handleToggleChange = (selectedIds: string[]) => {
     const allWidgets = definition?.config?.widgets || [];
-    const updated = allWidgets.filter(w => selectedIds.includes(w.widgetId));
-    const uniqueWidgets = Array.from(new Map(updated.map(w => [w.widgetId, w])).values());
+    const updated = allWidgets.filter((w: Widget) => selectedIds.includes(w.widgetId));
+    const uniqueWidgets = Array.from(new Map(updated.map((w: Widget) => [w.widgetId, w])).values());
     setSelectedMetric(uniqueWidgets);
   };
 
@@ -39,10 +39,10 @@ const MetricSection: React.FC<MetricSectionProps> = ({ section }) => {
 
     setDefinition(section.definition || null);
 
-    const enabledWidgets = section.definition?.config.widgets?.filter((widget: any) =>
+    const enabledWidgets = section.definition?.config.widgets?.filter((widget: Widget) =>
       section.config.enabled?.includes(widget.widgetId)
     ) || [];
-    const uniqueWidgets = Array.from(new Map(enabledWidgets.map((w: any) => [w.widgetId, w])).values());
+    const uniqueWidgets = Array.from(new Map(enabledWidgets.map((w: Widget) => [w.widgetId, w])).values());
 
     setSelectedMetric(uniqueWidgets);
   }, [section.definition.definitionId]);
@@ -51,7 +51,7 @@ const MetricSection: React.FC<MetricSectionProps> = ({ section }) => {
     getDataResponse(section.definition.definitionId);
   }, [section.definition.definitionId]);
 
-  function getValueByPath(obj: any, path: string): any {
+  function getValueByPath(obj: Record<string, any>, path: string): any {
     return path.split('.').reduce((acc: any, key: string) => acc?.[key], obj);
   }
 
@@ -70,8 +70,8 @@ const MetricSection: React.FC<MetricSectionProps> = ({ section }) => {
         {loading ? (
           <Typography>Loading...</Typography>
         ) : (
-          definition?.config.widgets?.filter(widget => selectedMetric.some((selected: any) => selected.widgetId === widget.widgetId))
-            .map((widget, index) => {
+          definition?.config.widgets?.filter((widget:Widget) => selectedMetric.some((selected: Widget) => selected.widgetId === widget.widgetId))
+            .map((widget:Widget, index:number) => {
               const base = responseData?.[section.definition.definitionId] || {};
               const value = getValueByPath(base, widget.config.valueDefinition);
               const trendRaw = widget.config.trend?.trendvalueDefinition
