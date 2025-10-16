@@ -13,8 +13,8 @@
               "valueDefinition": "query_result.total_deposits",
               "trend": {
                 "trendvalueDefinition": "query_result.total_deposits_trend",
-                "positiveColor": "#00ff00",
-                "negativeColor": "#ff0000",
+                "positiveColor": "#20817B",
+                "negativeColor": "#E5381D",
                 "neutralColor": "#FFFF00"
               }
             }
@@ -29,8 +29,8 @@
               "color": "#C70039",
               "trend": {
                 "trendvalueDefinition": "query_result.total_withdrawals_trend",
-                "positiveColor": "#00ff00",
-                "negativeColor": "#ff0000",
+                "positiveColor": "#20817B",
+                "negativeColor": "#E5381D",
                 "neutralColor": "#FFFF00"
               }
             }
@@ -45,8 +45,8 @@
               "color": "#1e90ff",
               "trend": {
                 "trendvalueDefinition": "query_result.total_leads_trend",
-                "positiveColor": "#00ff00",
-                "negativeColor": "#ff0000",
+                "positiveColor": "#20817B",
+                "negativeColor": "#E5381D",
                 "neutralColor": "#FFFF00"
               }
             }
