@@ -2,19 +2,17 @@
   "definitions": [
     {
       "definitionId": "financial_overview",
-      "queryDefinition": {
-        "description": "Fetch financial overview metrics",
-        "query": "SELECT totalDeposits AS a, totalWithdrawals AS b, totalLeads AS c, swapPaid AS d, positions AS e, newClients AS f FROM financials WHERE date = {dateParam}"
-      },
+      "queryId": ["financial_overview_query"],
+      "typeId": "metric",
       "config": {
         "widgets": [
           {
             "widgetId": "totalDeposits",
             "label": "Total Deposits",
-            "valueDefinition": "query_result.a",
             "config": {
+              "valueDefinition": "query_result.total_deposits",
               "trend": {
-                "valueDefinition": "query_result.a_trend",
+                "trendvalueDefinition": "query_result.total_deposits_trend",
                 "positiveColor": "#00ff00",
                 "negativeColor": "#ff0000",
                 "neutralColor": "#FFFF00"
@@ -24,13 +22,13 @@
           {
             "widgetId": "totalWithdrawals",
             "label": "Total Withdrawals",
-            "valueDefinition": "query_result.b",
             "config": {
+              "valueDefinition": "query_result.total_withdrawals",
               "unit": "USD",
               "decimalPlaces": 2,
               "color": "#C70039",
               "trend": {
-                "valueDefinition": "query_result.b_trend",
+                "trendvalueDefinition": "query_result.total_withdrawals_trend",
                 "positiveColor": "#00ff00",
                 "negativeColor": "#ff0000",
                 "neutralColor": "#FFFF00"
@@ -40,13 +38,13 @@
           {
             "widgetId": "totalLeads",
             "label": "Total Leads",
-            "valueDefinition": "query_result.c",
             "config": {
+              "valueDefinition": "query_result.total_leads",
               "unit": "leads",
               "decimalPlaces": 0,
               "color": "#1e90ff",
               "trend": {
-                "valueDefinition": "query_result.c_trend",
+                "trendvalueDefinition": "query_result.total_leads_trend",
                 "positiveColor": "#00ff00",
                 "negativeColor": "#ff0000",
                 "neutralColor": "#FFFF00"
@@ -56,8 +54,8 @@
           {
             "widgetId": "swapPaid",
             "label": "Swap Paid",
-            "valueDefinition": "query_result.d",
             "config": {
+              "valueDefinition": "query_result.swap_paid",
               "unit": "USD",
               "decimalPlaces": 2,
               "color": "#ff7f50"
@@ -66,8 +64,8 @@
           {
             "widgetId": "positions",
             "label": "Positions",
-            "valueDefinition": "query_result.e",
             "config": {
+              "valueDefinition": "query_result.positions",
               "type": "indicator",
               "lowerBound": 10,
               "upperBound": 100,
@@ -78,8 +76,8 @@
           {
             "widgetId": "newClients",
             "label": "New Clients",
-            "valueDefinition": "query_result.f",
             "config": {
+              "valueDefinition": "query_result.new_clients",
               "unit": "clients",
               "decimalPlaces": 0,
               "color": "#ffa500"
@@ -90,17 +88,15 @@
     },
     {
       "definitionId": "key_business_metrics",
-      "queryDefinition": {
-        "description": "Fetch key business metrics",
-        "query": "SELECT activeAccounts AS a, totalTrades AS b, commissionSettled AS c, realisedPL AS d FROM business_metrics WHERE date = {dateParam}"
-      },
+      "queryId": ["key_business_metrics_query"],
+      "typeId": "metric",
       "config": {
         "widgets": [
           {
             "widgetId": "activeAccounts",
             "label": "Total Active Accounts",
-            "valueDefinition": "query_result.a",
             "config": {
+              "valueDefinition": "query_result.total_active_accounts",
               "unit": "accounts",
               "decimalPlaces": 0,
               "color": "#1e90ff"
@@ -109,8 +105,8 @@
           {
             "widgetId": "totalTrades",
             "label": "Total Trades",
-            "valueDefinition": "query_result.b",
             "config": {
+              "valueDefinition": "query_result.total_trades",
               "unit": "trades",
               "decimalPlaces": 0,
               "color": "#ff6347"
@@ -119,8 +115,8 @@
           {
             "widgetId": "commissionSettled",
             "label": "Commission Settled",
-            "valueDefinition": "query_result.c",
             "config": {
+              "valueDefinition": "query_result.commission_settled",
               "unit": "USD",
               "decimalPlaces": 2,
               "color": "#008080"
@@ -129,8 +125,8 @@
           {
             "widgetId": "realisedProfitLoss",
             "label": "Realised Profit/Loss",
-            "valueDefinition": "query_result.d",
             "config": {
+              "valueDefinition": "query_result.realised_profit_loss",
               "unit": "USD",
               "decimalPlaces": 2,
               "colorPositive": "#009966",
@@ -142,12 +138,10 @@
     },
     {
       "definitionId": "top_instruments",
-      "queryDefinition": {
-        "description": "Fetch top instruments data",
-        "query": "SELECT symbol, price, change, volume FROM instruments ORDER BY volume DESC"
-      },
-      "valueDefinition": "query_result.data",
+      "queryId": ["top_instruments_query"],
+      "typeId": "table",
       "config": {
+        "valueDefinition": "query_result.data",
         "columns": [
           {
             "key": "symbol",

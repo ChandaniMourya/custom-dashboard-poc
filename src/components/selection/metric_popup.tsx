@@ -13,27 +13,46 @@ import {
   Divider,
 } from "@mui/material";
 
-const MetricPopup = ({
+// Define type for individual metric
+interface MetricItem {
+  widgetId: string;
+  label: string;
+}
+
+// Props for MetricPopup
+interface MetricPopupProps {
+  open?: boolean;
+  onClose?: () => void;
+  listOfMetrics?: MetricItem[];
+  selectedMetric?: (string | MetricItem)[];
+  onToggleChange?: (selectedIds: string[]) => void;
+}
+
+const MetricPopup: React.FC<MetricPopupProps> = ({
   open = false,
   onClose,
   listOfMetrics = [],
   selectedMetric = [],
   onToggleChange,
 }) => {
-  const toIdArray = (arr) => (arr || []).map((m) => (typeof m === "string" ? m : m?.widgetId)).filter(Boolean);
-  const [selected, setSelected] = useState(toIdArray(selectedMetric));
+  // Helper to convert mixed array to array of widgetId strings
+  const toIdArray = (arr: (string | MetricItem)[]): string[] =>
+    (arr || [])
+      .map((m) => (typeof m === "string" ? m : m?.widgetId))
+      .filter(Boolean) as string[];
+
+  const [selected, setSelected] = useState<string[]>(toIdArray(selectedMetric));
 
   // Keep internal state synced with external props
   useEffect(() => {
     setSelected(toIdArray(selectedMetric));
   }, [selectedMetric]);
 
-  const handleToggle = (id) => {
+  const handleToggle = (id: string) => {
     const updated = selected.includes(id)
       ? selected.filter((x) => x !== id)
       : [...selected, id];
     setSelected(updated);
-    // if (onToggleChange) onToggleChange(updated);
   };
 
   const handleSave = () => {
@@ -42,7 +61,7 @@ const MetricPopup = ({
   };
 
   const handleCancel = () => {
-    setSelected(selectedMetric); // revert changes
+    setSelected(toIdArray(selectedMetric)); // revert changes
     if (onClose) onClose();
   };
 
@@ -53,9 +72,9 @@ const MetricPopup = ({
       <DialogContent dividers>
         {listOfMetrics.length > 0 ? (
           <List dense>
-             {listOfMetrics.map((item) => (
+            {listOfMetrics.map((item) => (
               <ListItem
-                 key={item.widgetId}
+                key={item.widgetId}
                 secondaryAction={
                   <Switch
                     edge="end"
