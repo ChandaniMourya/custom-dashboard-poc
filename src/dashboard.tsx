@@ -22,14 +22,7 @@ const Dashboard: React.FC<{ id?: string }> = ({ id = "dashboard123" }) => {
               const definition = await getDefinitionById(section.definitionId);
               console.log('Fetched definition:', definition);
               return {
-                ...section,
-                config: {
-                  sectionId: section.sectionId,
-                  definitionId: section.definitionId,
-                  label: section.label,
-                  enabled: section.enabled,
-                  tableRowLimit: section.tableRowLimit
-                },
+                config: {...section},
                 definition: definition
               } as ISection;
             } catch (err) {

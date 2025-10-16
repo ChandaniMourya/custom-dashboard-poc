@@ -1,11 +1,13 @@
-export interface IWidgetTrend {
+import { types } from "util";
+
+export type IWidgetTrend = {
   trendvalueDefinition: string;
   positiveColor?: string;
   negativeColor?: string;
   neutralColor?: string;
 }
 
-export interface IWidgetConfig {
+export type IWidgetConfig ={
   valueDefinition: string;
   unit?: string;
   decimalPlaces?: number;
@@ -18,18 +20,17 @@ export interface IWidgetConfig {
   trend?: IWidgetTrend;
 }
 
-export interface IWidget {
+export type IWidget = {
   widgetId: string;
   label: string;
   config: IWidgetConfig;
 }
-export interface TableColumn {
+export type TableColumn ={
   key: string;
   label: string;
 }
 
-
-export interface IDefinition {
+export type IDefinition = {
   definitionId: string;
   typeId: string;  
   queryId: string[];   
@@ -47,7 +48,8 @@ export interface ISection {
   label?: string;
 }
 
-export interface IConfig {
+// Use type here instead of interface.
+export type IConfig = {
     sectionId: string;
     definitionId: string;
     label: string;
