@@ -55,7 +55,7 @@ const MetricWidget: React.FC<MetricWidgetProps> = ({ data }) => {
           <Typography variant="h5" fontWeight={600} color="text.primary">
             {data.value}
           </Typography>
-          { data.trendValue && data.trendValue !== 0 && (
+          { typeof data.trendValue !== 'undefined' && data.trendValue !== 0 && (
             <Box
               sx={{
                 mt: 1,
@@ -83,7 +83,7 @@ const MetricWidget: React.FC<MetricWidgetProps> = ({ data }) => {
                   textShadow: "0 1px 2px rgba(0,0,0,0.3)",
                 }}
               >
-                {data.trendValue !== 0 ? `${data.trendValue}` : ""}
+                {data.trendValue}
               </Typography>
             </Box>
           )}

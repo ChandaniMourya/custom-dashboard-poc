@@ -35,7 +35,7 @@ export interface IDefinition {
   queryId: string[];   
   config: {
     widgets?: IWidget[];
-     valueDefinition?: string;
+    valueDefinition?: string;
     columns?: TableColumn[];
   };
 }

@@ -74,9 +74,14 @@ const MetricSection: React.FC<MetricSectionProps> = ({ section }) => {
             .map((widget, index) => {
               const base = responseData?.[section.definition.definitionId] || {};
               const value = getValueByPath(base, widget.config.valueDefinition);
-              const trendValue = widget.config.trend?.trendvalueDefinition
+              const trendRaw = widget.config.trend?.trendvalueDefinition
                 ? getValueByPath(base, widget.config.trend.trendvalueDefinition)
-                : '';
+                : undefined;
+              const trendValue = typeof trendRaw === 'number'
+                ? (trendRaw === 0 ? undefined : trendRaw)
+                : (trendRaw != null && !isNaN(Number(trendRaw))
+                  ? (Number(trendRaw) === 0 ? undefined : Number(trendRaw))
+                  : undefined);
 
               return <MetricWidget
   key={widget.widgetId}
